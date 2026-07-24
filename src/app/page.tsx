@@ -182,7 +182,7 @@ export default function IconConverterApp() {
               {config.inputType === 'svg-code' && (
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" c="dimmed">Paste `<svg>` XML Markup di bawah:</Text>
+                    <Text size="sm" c="dimmed">Paste SVG XML Markup di bawah:</Text>
                     <Group gap={6}>
                       <Text size="xs" c="dimmed">Sample:</Text>
                       {SAMPLE_SVGS.map((sample, idx) => (
