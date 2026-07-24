@@ -1,46 +1,145 @@
 @import '@mantine/core/styles.css';
 
 :root {
-  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-  --glass-bg: rgba(30, 41, 59, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  
-  /* SCSS Custom Token Aliases from palette.scss */
-  --faded-copper: #a57548;
-  --soft-apricot: #fcd7ad;
-  --peach-glow: #f6c28b;
-  --pacific-cyan: #5296a5;
-  --frosted-blue: #82ddf0;
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+  --glass-bg: rgba(15, 23, 42, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --header-height: 4.5rem;
+  --cyan: #22d3ee;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  background: var(--bg-gradient);
+}
+
+body {
+  /* Solid fallback — jauh lebih ringan dari radial-gradient + background-attachment:fixed */
+  background-color: var(--bg-primary);
   color: #f8fafc;
   min-height: 100vh;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Glassmorphism utility card with WCAG AA verified contrasts */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+}
+
+/* ===========================
+   Layout Structure
+=========================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+}
+
+.site-main {
+  width: 100%;
+  max-width: 88rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  min-height: calc(100vh - var(--header-height));
+}
+
+@media (min-width: 48em) {
+  .site-main {
+    padding: 2rem 2rem;
+  }
+}
+
+/* ===========================
+   Glassmorphism Panel
+   backdrop-filter hanya pada header, bukan semua panel
+=========================== */
+
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.45);
 }
 
-/* Canvas preview container checkerboard background */
+/* Header khusus boleh blur karena cuma 1 elemen */
+.header-inner {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ===========================
+   Checkerboard Canvas Background
+=========================== */
+
 .checkerboard-bg {
-  background-color: #1e293b;
-  background-image: 
-    linear-gradient(45deg, #334155 25%, transparent 25%), 
-    linear-gradient(-45deg, #334155 25%, transparent 25%), 
-    linear-gradient(45deg, transparent 75%, #334155 75%), 
-    linear-gradient(-45deg, transparent 75%, #334155 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  background-color: #0f172a;
+  background-image:
+    linear-gradient(45deg, #1e293b 25%, transparent 25%),
+    linear-gradient(-45deg, #1e293b 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1e293b 75%),
+    linear-gradient(-45deg, transparent 75%, #1e293b 75%);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+}
+
+/* ===========================
+   Editor 2-Column Layout
+=========================== */
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 75em) {
+  .editor-grid {
+    grid-template-columns: 5fr 7fr;
+    gap: 2rem;
+  }
+}
+
+.editor-preview-col,
+.editor-controls-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===========================
+   Gradient Text Utility
+=========================== */
+
+.gradient-text {
+  background: linear-gradient(135deg, #22d3ee, #5eead4, #bae6fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===========================
+   Feature Card — GPU-friendly hover
+   Hanya opacity + shadow, hindari transform scale/translate
+   agar tidak trigger layout/composite baru
+=========================== */
+
+.feature-card {
+  /* promote ke composite layer sekali saja */
+  will-change: opacity;
+  transition: opacity 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(34, 211, 238, 0.35) !important;
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.1), 0 16px 40px -10px rgba(0, 0, 0, 0.5);
 }

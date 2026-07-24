@@ -2,56 +2,124 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Group, Title, Button, Container } from '@mantine/core';
+import { Group, Title, Button, Burger, Drawer, Stack } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { usePathname } from 'next/navigation';
-import { t } from '../lib/strings';
-
-const IconSparkles = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#82ddf0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
-  </svg>
-);
+import { Home, FileCode, Smile, Link2 } from 'lucide-react';
 
 export function Header() {
   const pathname = usePathname();
+  const [opened, { toggle, close }] = useDisclosure(false);
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/converter', label: 'SVG Converter' },
-    { href: '/unicode', label: 'Unicode Generator' },
-    { href: '/url-fetcher', label: 'URL Fetcher' },
+    { href: '/', label: 'Home', icon: Home },
+    { href: '/converter', label: 'SVG Converter', icon: FileCode },
+    { href: '/unicode', label: 'Unicode Generator', icon: Smile },
+    { href: '/url-fetcher', label: 'URL Fetcher', icon: Link2 },
   ];
 
   return (
-    <header className="border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-md sticky top-0 z-50">
-      <Container size="xl" className="h-16 flex items-center justify-between px-4">
-        <Link href="/" className="no-underline">
-          <Group gap="xs">
-            <IconSparkles />
-            <Title order={3} className="text-xl font-bold bg-gradient-to-r from-sky-400 via-teal-300 to-amber-200 bg-clip-text text-transparent">
-              {t('app.title')}
-            </Title>
-          </Group>
+    <header className="site-header">
+      <div
+        className="header-inner"
+        style={{
+          maxWidth: '88rem',
+          margin: '0 auto',
+          background: 'rgba(15, 23, 42, 0.85)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '1rem',
+          boxShadow: '0 4px 24px -6px rgba(0,0,0,0.5)',
+          height: '3.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingInline: '1.25rem',
+        }}
+      >
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <Title
+            order={3}
+            className="gradient-text"
+            style={{ fontSize: '1.2rem', fontWeight: 700 }}
+          >
+            CAIFS Studio
+          </Title>
         </Link>
 
-        <Group gap="xs">
+        {/* Desktop Navigation */}
+        <Group gap="xs" visibleFrom="md">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
+            const IconComponent = link.icon;
             return (
               <Button
                 key={link.href}
                 component={Link}
                 href={link.href}
                 variant={isActive ? 'filled' : 'subtle'}
-                color={isActive ? 'pacificCyan' : 'gray.3'}
+                color={isActive ? 'pacificCyan' : 'gray'}
                 size="sm"
+                leftSection={<IconComponent size={16} />}
+                style={{ borderRadius: '0.625rem', fontWeight: isActive ? 600 : 400 }}
               >
                 {link.label}
               </Button>
             );
           })}
         </Group>
-      </Container>
+
+        {/* Mobile Hamburger */}
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          hiddenFrom="md"
+          aria-label="Toggle navigation menu"
+          color="#22d3ee"
+          size="sm"
+        />
+
+        {/* Mobile Drawer */}
+        <Drawer
+          opened={opened}
+          onClose={close}
+          position="right"
+          size="75%"
+          hiddenFrom="md"
+          title={
+            <span className="gradient-text" style={{ fontSize: '1.1rem', fontWeight: 700, fontFamily: 'Outfit, system-ui, sans-serif' }}>
+              Menu Navigasi
+            </span>
+          }
+          styles={{
+            content: { backgroundColor: '#0f172a', color: '#f8fafc' },
+            header: { backgroundColor: '#0f172a', borderBottom: '1px solid rgba(255,255,255,0.08)' },
+          }}
+        >
+          <Stack gap="sm" mt="md">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              const IconComponent = link.icon;
+              return (
+                <Button
+                  key={link.href}
+                  component={Link}
+                  href={link.href}
+                  onClick={close}
+                  variant={isActive ? 'filled' : 'subtle'}
+                  color={isActive ? 'pacificCyan' : 'gray'}
+                  fullWidth
+                  justify="start"
+                  size="md"
+                  leftSection={<IconComponent size={20} />}
+                  style={{ borderRadius: '0.625rem', fontWeight: isActive ? 600 : 400 }}
+                >
+                  {link.label}
+                </Button>
+              );
+            })}
+          </Stack>
+        </Drawer>
+      </div>
     </header>
   );
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 import { theme } from '../theme';
 import { Header } from '../components/Header';
 import './globals.css';
 
 export const metadata = {
-  title: 'CAIFS - Universal Icon Tool',
-  description: 'Convert SVG, generate Unicode icons, and fetch icon URLs easily.',
+  title: 'CAIFS - Universal Icon Studio',
+  description: 'Convert SVG, generate Unicode icons, and fetch icon URLs easily with modern UI.',
 };
 
 export default function RootLayout({
@@ -15,14 +15,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" {...mantineHtmlProps}>
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="dark" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body>
-        <MantineProvider theme={theme}>
+      <body suppressHydrationWarning>
+        <MantineProvider theme={theme} defaultColorScheme="dark">
           <Header />
-          <main className="max-w-7xl mx-auto p-4 md:p-8 min-h-[calc(100vh-4rem)]">
+          <main className="site-main">
             {children}
           </main>
         </MantineProvider>

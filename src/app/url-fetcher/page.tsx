@@ -2,15 +2,10 @@
 
 import React, { useState } from 'react';
 import { Stack, Group, Text, TextInput, Button, Notification, Modal } from '@mantine/core';
+import { Info } from 'lucide-react';
 import { IconConfig } from '../../types/icon';
 import { IconEditor } from '../../components/IconEditor';
 import { t } from '../../lib/strings';
-
-const IconInfoCircle = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
-  </svg>
-);
 
 export default function UrlFetcherPage() {
   const [fetchingUrl, setFetchingUrl] = useState(false);
@@ -64,7 +59,7 @@ export default function UrlFetcherPage() {
                 variant="subtle" 
                 color="gray.2" 
                 size="xs" 
-                leftSection={<IconInfoCircle />}
+                leftSection={<Info size={14} />}
                 onClick={() => setTosModalOpened(true)}
               >
                 {t('input.url.tosLink')}

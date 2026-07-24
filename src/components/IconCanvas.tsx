@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { IconConfig } from '../types/icon';
 
 interface IconCanvasProps {
@@ -9,9 +9,12 @@ interface IconCanvasProps {
 }
 
 export const IconCanvas: React.FC<IconCanvasProps> = ({ config, canvasRef }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  // Debounce timer ref — agar canvas tidak re-draw setiap keystroke
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Cached object URL agar tidak leak
+  const blobUrlRef = useRef<string | null>(null);
 
-  useEffect(() => {
+  const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -22,10 +25,9 @@ export const IconCanvas: React.FC<IconCanvasProps> = ({ config, canvasRef }) => 
     canvas.width = size;
     canvas.height = size;
 
-    // Clear
     ctx.clearRect(0, 0, size, size);
 
-    // Draw Background
+    // Background
     if (config.bgColorType === 'solid') {
       ctx.fillStyle = config.bgColor1;
       ctx.fillRect(0, 0, size, size);
@@ -37,7 +39,6 @@ export const IconCanvas: React.FC<IconCanvasProps> = ({ config, canvasRef }) => 
       ctx.fillRect(0, 0, size, size);
     }
 
-    // Draw Content based on Input Type
     const pad = (config.paddingPercent / 100) * size;
     const contentSize = size - pad * 2;
 
@@ -48,37 +49,77 @@ export const IconCanvas: React.FC<IconCanvasProps> = ({ config, canvasRef }) => 
       ctx.font = `${contentSize * 0.85}px sans-serif`;
       ctx.fillText(config.unicodeChar || '★', size / 2, size / 2 + contentSize * 0.05);
     } else if (config.inputType === 'svg-code' || config.inputType === 'url') {
-      let rawSvg = config.svgCode;
-      
-      // Inject/Override fill color & stroke color inside SVG string if present
+      const rawSvg = config.svgCode;
       if (rawSvg && rawSvg.trim().startsWith('<svg')) {
-        // Prepare image element to render SVG onto canvas
+        // Revoke previous blob URL sebelum buat yang baru
+        if (blobUrlRef.current) {
+          URL.revokeObjectURL(blobUrlRef.current);
+        }
+
         const blob = new Blob([rawSvg], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(blob);
-        const img = new Image();
+        blobUrlRef.current = url;
 
+        const img = new Image();
         img.onload = () => {
-          ctx.drawImage(img, pad, pad, contentSize, contentSize);
+          // Pastikan canvas masih mounted sebelum draw
+          if (canvasRef.current) {
+            ctx.drawImage(img, pad, pad, contentSize, contentSize);
+          }
           URL.revokeObjectURL(url);
+          blobUrlRef.current = null;
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          blobUrlRef.current = null;
         };
         img.src = url;
       }
     }
   }, [config, canvasRef]);
 
+  useEffect(() => {
+    // Debounce 80ms — balance antara responsif & tidak re-draw tiap karakter
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(draw, 80);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [draw]);
+
+  // Cleanup blob URL on unmount
+  useEffect(() => {
+    return () => {
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div 
-      ref={containerRef}
-      className="checkerboard-bg rounded-xl overflow-hidden shadow-2xl flex items-center justify-center p-4 border border-slate-700/50 min-h-[320px] max-w-full"
+    <div
+      className="checkerboard-bg"
+      style={{
+        borderRadius: '0.75rem',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        minHeight: '320px',
+        border: '1px solid rgba(71, 85, 105, 0.4)',
+      }}
     >
-      <canvas 
-        ref={canvasRef} 
-        style={{ 
-          maxWidth: '100%', 
-          maxHeight: '380px', 
+      <canvas
+        ref={canvasRef}
+        style={{
+          maxWidth: '100%',
+          maxHeight: '380px',
           objectFit: 'contain',
-          borderRadius: config.bgColorType !== 'transparent' ? '8px' : '0px' 
-        }} 
+          borderRadius: config.bgColorType !== 'transparent' ? '6px' : '0px',
+          display: 'block',
+        }}
       />
     </div>
   );
