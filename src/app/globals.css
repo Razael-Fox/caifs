@@ -1,8 +1,39 @@
 @import '@mantine/core/styles.css';
 
-/* Custom globals if needed */
+:root {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background: var(--bg-gradient);
+  color: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Glassmorphism utility card */
+.glass-panel {
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Canvas preview container checkboard background */
+.checkerboard-bg {
+  background-color: #1e293b;
+  background-image: 
+    linear-gradient(45deg, #334155 25%, transparent 25%), 
+    linear-gradient(-45deg, #334155 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #334155 75%), 
+    linear-gradient(-45deg, transparent 75%, #334155 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
