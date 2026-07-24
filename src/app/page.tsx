@@ -196,13 +196,13 @@ export default function IconConverterApp() {
               {config.inputType === 'svg-code' && (
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" c="dimmed">{t('input.svg.label')}</Text>
+                    <Text size="sm" c="gray.3">{t('input.svg.label')}</Text>
                     <Group gap={6}>
-                      <Text size="xs" c="dimmed">{t('input.svg.sample')}</Text>
+                      <Text size="xs" c="gray.4">{t('input.svg.sample')}</Text>
                       {SAMPLE_SVGS.map((sample, idx) => (
                         <Badge 
                           key={idx} 
-                          variant="light" 
+                          variant="filled" 
                           color="pacificCyan" 
                           style={{ cursor: 'pointer' }}
                           onClick={() => setConfig({ ...config, svgCode: sample.code })}
@@ -214,6 +214,7 @@ export default function IconConverterApp() {
                   </Group>
                   <Textarea
                     rows={6}
+                    aria-label={t('input.svg.label')}
                     placeholder={t('input.svg.placeholder')}
                     value={config.svgCode}
                     onChange={(e) => setConfig({ ...config, svgCode: e.currentTarget.value })}
@@ -226,6 +227,7 @@ export default function IconConverterApp() {
                 <Stack gap="xs">
                   <TextInput
                     label={t('input.unicode.label')}
+                    aria-label={t('input.unicode.label')}
                     placeholder={t('input.unicode.placeholder')}
                     value={config.unicodeChar}
                     onChange={(e) => setConfig({ ...config, unicodeChar: e.currentTarget.value })}
@@ -237,12 +239,12 @@ export default function IconConverterApp() {
               {config.inputType === 'url' && (
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" fw={600} c="frostedBlue">
+                    <Text size="sm" fw={600} c="sky.2">
                       {t('input.url.title')}
                     </Text>
                     <Button 
                       variant="subtle" 
-                      color="gray" 
+                      color="gray.2" 
                       size="xs" 
                       leftSection={<IconInfoCircle />}
                       onClick={() => setTosModalOpened(true)}
@@ -251,6 +253,7 @@ export default function IconConverterApp() {
                     </Button>
                   </Group>
                   <TextInput
+                    aria-label={t('input.url.title')}
                     placeholder={t('input.url.placeholder')}
                     value={config.urlInput}
                     onChange={(e) => setConfig({ ...config, urlInput: e.currentTarget.value })}

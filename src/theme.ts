@@ -19,32 +19,32 @@ const pacificCyan: MantineColorsTuple = [
   '#dbeff3',
   '#b4e0e8',
   '#89cfdc',
-  '#67bfd0',
-  '#5296a5', // Base: pacific-cyan
-  '#44808e',
-  '#366874',
-  '#2a505a',
-  '#1d3840',
+  '#367885',
+  '#2a626e', // Darker shade for high text contrast
+  '#1f4e58', // Base: pacific-cyan high-contrast AA compliant
+  '#183d46',
+  '#102b32',
+  '#091b20',
 ];
 
 const frostedBlue: MantineColorsTuple = [
   '#f0fcff',
   '#dcf7fc',
   '#b6eff9',
-  '#82ddf0', // Base: frosted-blue
-  '#5acde4',
-  '#37bad4',
-  '#229cb3',
-  '#187d91',
-  '#116070',
-  '#0a4450',
+  '#82ddf0',
+  '#38b2cc',
+  '#1b8ea6',
+  '#126d80',
+  '#0a4e5d',
+  '#05333e',
+  '#021b22',
 ];
 
 const softApricot: MantineColorsTuple = [
   '#fff9f2',
   '#fff1e3',
   '#ffe2c7',
-  '#fcd7ad', // Base: soft-apricot
+  '#fcd7ad',
   '#f9c48d',
   '#f5ad6b',
   '#db9250',
@@ -57,7 +57,7 @@ const peachGlowTuple: MantineColorsTuple = [
   '#fff8f3',
   '#ffede2',
   '#ffd9c4',
-  '#f6c28b', // Base: peach-glow
+  '#f6c28b',
   '#f2a969',
   '#eb8f47',
   '#d47530',
@@ -68,7 +68,7 @@ const peachGlowTuple: MantineColorsTuple = [
 
 export const theme = createTheme({
   primaryColor: 'pacificCyan',
-  primaryShade: 5,
+  primaryShade: 6,
   defaultRadius: 'md',
   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
   colors: {
