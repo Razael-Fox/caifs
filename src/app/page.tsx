@@ -3,13 +3,14 @@
 import React, { useState, useRef } from 'react';
 import { 
   Title, Text, Group, Stack, SegmentedControl, Textarea, TextInput, 
-  Select, Slider, ColorInput, Button, Card, Badge, Modal, ActionIcon, Notification 
+  Select, Slider, ColorInput, Button, Card, Badge, Modal, Notification 
 } from '@mantine/core';
 import { IconConfig, DEFAULT_CONFIG } from '../types/icon';
 import { IconCanvas } from '../components/IconCanvas';
+import { t } from '../lib/strings';
 
 const IconSparkles = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#82ddf0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
   </svg>
 );
@@ -51,7 +52,7 @@ export default function IconConverterApp() {
     }
   ];
 
-  // Download logic
+  // Export handling
   const handleExport = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -67,7 +68,7 @@ export default function IconConverterApp() {
     link.click();
   };
 
-  // Proxy Fetcher ke VPS API (api-razael-fox)
+  // Proxy Fetcher call
   const handleProxyFetch = async () => {
     if (!config.urlInput.trim()) return;
     setFetchingUrl(true);
@@ -81,7 +82,7 @@ export default function IconConverterApp() {
       const res = await fetch(fetchUrl);
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || data.error || 'Gagal mengambil icon');
+      if (!res.ok) throw new Error(data.detail || data.error || t('notifications.fetchError'));
 
       if (data.type === 'svg' && data.content) {
         setConfig((prev) => ({
@@ -89,10 +90,10 @@ export default function IconConverterApp() {
           inputType: 'svg-code',
           svgCode: data.content,
         }));
-        setFetchSuccess('SVG Icon berhasil ditarik via VPS Proxy API!');
+        setFetchSuccess(t('notifications.fetchSuccess'));
       }
     } catch (err: any) {
-      setFetchError(err.message || 'Kesalahan saat koneksi ke fetcher proxy');
+      setFetchError(err.message || t('notifications.fetchError'));
     } finally {
       setFetchingUrl(false);
     }
@@ -104,12 +105,12 @@ export default function IconConverterApp() {
       <Stack align="center" justify="center" mb="xl" className="text-center">
         <Group gap="xs">
           <IconSparkles />
-          <Title order={1} className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400 bg-clip-text text-transparent">
-            Icon Converter & Fallback Fetcher
+          <Title order={1} className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-sky-400 via-teal-300 to-amber-200 bg-clip-text text-transparent">
+            {t('app.title')}
           </Title>
         </Group>
         <Text c="dimmed" size="lg" className="max-w-2xl">
-          Konversi SVG, Unicode Glyph, atau Asset Web Icon ke image PNG, JPG, & WEBP secara instan dengan resolusi & warna kustom.
+          {t('app.subtitle')}
         </Text>
       </Stack>
 
@@ -119,9 +120,9 @@ export default function IconConverterApp() {
           <Card className="glass-panel p-6">
             <Group justify="space-between" mb="md">
               <Text fw={700} size="lg" c="white">
-                Live Preview
+                {t('preview.title')}
               </Text>
-              <Badge variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }}>
+              <Badge color="pacificCyan" variant="filled">
                 {config.exportResolution} x {config.exportResolution} px
               </Badge>
             </Group>
@@ -132,7 +133,7 @@ export default function IconConverterApp() {
             <Stack mt="lg" gap="md">
               <Group grow>
                 <Select
-                  label="Format Export"
+                  label={t('preview.exportFormatLabel')}
                   data={[
                     { value: 'png', label: 'PNG (Transparent / Solid)' },
                     { value: 'jpeg', label: 'JPG / JPEG (Solid BG)' },
@@ -143,7 +144,7 @@ export default function IconConverterApp() {
                 />
 
                 <Select
-                  label="Preset Resolusi"
+                  label={t('preview.resolutionLabel')}
                   data={[
                     { value: '32', label: '32 x 32 px' },
                     { value: '64', label: '64 x 64 px' },
@@ -158,13 +159,12 @@ export default function IconConverterApp() {
 
               <Button 
                 size="lg" 
-                variant="gradient" 
-                gradient={{ from: 'indigo', to: 'cyan' }}
+                color="pacificCyan"
                 leftSection={<IconDownload />}
                 onClick={handleExport}
-                className="shadow-lg shadow-indigo-500/20"
+                className="shadow-lg shadow-cyan-900/30"
               >
-                Download Icon ({config.exportFormat.toUpperCase()})
+                {t('preview.downloadButton')} ({config.exportFormat.toUpperCase()})
               </Button>
             </Stack>
           </Card>
@@ -177,15 +177,15 @@ export default function IconConverterApp() {
               {/* Input Mode Switcher */}
               <div>
                 <Text fw={600} mb="xs" c="gray.3">
-                  Pilih Sumber Input Icon
+                  {t('input.title')}
                 </Text>
                 <SegmentedControl
                   fullWidth
-                  color="indigo"
+                  color="pacificCyan"
                   data={[
-                    { label: 'SVG Code', value: 'svg-code' },
-                    { label: 'Unicode Glyph', value: 'unicode' },
-                    { label: 'URL Fetcher (Opt-In)', value: 'url' },
+                    { label: t('input.modes.svgCode'), value: 'svg-code' },
+                    { label: t('input.modes.unicode'), value: 'unicode' },
+                    { label: t('input.modes.url'), value: 'url' },
                   ]}
                   value={config.inputType}
                   onChange={(val) => setConfig({ ...config, inputType: val as any })}
@@ -196,14 +196,14 @@ export default function IconConverterApp() {
               {config.inputType === 'svg-code' && (
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" c="dimmed">Paste SVG XML Markup di bawah:</Text>
+                    <Text size="sm" c="dimmed">{t('input.svg.label')}</Text>
                     <Group gap={6}>
-                      <Text size="xs" c="dimmed">Sample:</Text>
+                      <Text size="xs" c="dimmed">{t('input.svg.sample')}</Text>
                       {SAMPLE_SVGS.map((sample, idx) => (
                         <Badge 
                           key={idx} 
                           variant="light" 
-                          color="indigo" 
+                          color="pacificCyan" 
                           style={{ cursor: 'pointer' }}
                           onClick={() => setConfig({ ...config, svgCode: sample.code })}
                         >
@@ -214,7 +214,7 @@ export default function IconConverterApp() {
                   </Group>
                   <Textarea
                     rows={6}
-                    placeholder="<svg ...> ... </svg>"
+                    placeholder={t('input.svg.placeholder')}
                     value={config.svgCode}
                     onChange={(e) => setConfig({ ...config, svgCode: e.currentTarget.value })}
                   />
@@ -225,8 +225,8 @@ export default function IconConverterApp() {
               {config.inputType === 'unicode' && (
                 <Stack gap="xs">
                   <TextInput
-                    label="Karakter / Simbol Unicode"
-                    placeholder="Masukkan emoji atau karakter (e.g. ⚡, ★, 🚀)"
+                    label={t('input.unicode.label')}
+                    placeholder={t('input.unicode.placeholder')}
                     value={config.unicodeChar}
                     onChange={(e) => setConfig({ ...config, unicodeChar: e.currentTarget.value })}
                   />
@@ -237,8 +237,8 @@ export default function IconConverterApp() {
               {config.inputType === 'url' && (
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" fw={600} c="cyan.3">
-                      Fallback Specific Icon Fetcher (Opt-In)
+                    <Text size="sm" fw={600} c="frostedBlue">
+                      {t('input.url.title')}
                     </Text>
                     <Button 
                       variant="subtle" 
@@ -247,22 +247,22 @@ export default function IconConverterApp() {
                       leftSection={<IconInfoCircle />}
                       onClick={() => setTosModalOpened(true)}
                     >
-                      ToS & Legal Notice
+                      {t('input.url.tosLink')}
                     </Button>
                   </Group>
                   <TextInput
-                    placeholder="https://example.com/icon.svg"
+                    placeholder={t('input.url.placeholder')}
                     value={config.urlInput}
                     onChange={(e) => setConfig({ ...config, urlInput: e.currentTarget.value })}
                     rightSection={
                       <Button 
                         size="xs" 
                         variant="filled" 
-                        color="indigo" 
+                        color="pacificCyan" 
                         loading={fetchingUrl}
                         onClick={handleProxyFetch}
                       >
-                        Fetch
+                        {t('input.url.fetchButton')}
                       </Button>
                     }
                   />
@@ -282,24 +282,24 @@ export default function IconConverterApp() {
               {/* Customization Options */}
               <div className="border-t border-slate-700/50 pt-4">
                 <Text fw={700} size="md" mb="md" c="white">
-                  Kustomisasi Tampilan & Canvas
+                  {t('customization.title')}
                 </Text>
                 
                 <Stack gap="md">
                   {/* Colors */}
                   <Group grow>
                     <ColorInput
-                      label="Warna Fill Icon"
+                      label={t('customization.fillColor')}
                       format="hex"
                       value={config.fillColor}
                       onChange={(val) => setConfig({ ...config, fillColor: val })}
                     />
                     <Select
-                      label="Tipe Background Canvas"
+                      label={t('customization.bgType')}
                       data={[
-                        { value: 'transparent', label: 'Transparent' },
-                        { value: 'solid', label: 'Solid Color' },
-                        { value: 'gradient', label: 'Gradient Color' },
+                        { value: 'transparent', label: t('customization.bgOptions.transparent') },
+                        { value: 'solid', label: t('customization.bgOptions.solid') },
+                        { value: 'gradient', label: t('customization.bgOptions.gradient') },
                       ]}
                       value={config.bgColorType}
                       onChange={(val) => setConfig({ ...config, bgColorType: (val as any) || 'transparent' })}
@@ -309,14 +309,14 @@ export default function IconConverterApp() {
                   {config.bgColorType !== 'transparent' && (
                     <Group grow>
                       <ColorInput
-                        label="Background Color 1"
+                        label={t('customization.bgColor1')}
                         format="hex"
                         value={config.bgColor1}
                         onChange={(val) => setConfig({ ...config, bgColor1: val })}
                       />
                       {config.bgColorType === 'gradient' && (
                         <ColorInput
-                          label="Background Color 2"
+                          label={t('customization.bgColor2')}
                           format="hex"
                           value={config.bgColor2}
                           onChange={(val) => setConfig({ ...config, bgColor2: val })}
@@ -327,14 +327,14 @@ export default function IconConverterApp() {
 
                   {/* Sliders */}
                   <div>
-                    <Text size="sm" mb={4}>Padding Icon: {config.paddingPercent}%</Text>
+                    <Text size="sm" mb={4}>{t('customization.padding')}: {config.paddingPercent}%</Text>
                     <Slider
                       value={config.paddingPercent}
                       onChange={(val) => setConfig({ ...config, paddingPercent: val })}
                       min={0}
                       max={40}
                       step={1}
-                      color="indigo"
+                      color="pacificCyan"
                     />
                   </div>
                 </Stack>
@@ -348,18 +348,18 @@ export default function IconConverterApp() {
       <Modal 
         opened={tosModalOpened} 
         onClose={() => setTosModalOpened(false)}
-        title="Legal & Term of Service Notice"
+        title={t('modal.title')}
         centered
       >
         <Stack gap="sm">
           <Text size="sm">
-            Fitur <b>Fallback Icon Fetcher</b> disediakan strictly sebagai fasilitas bantu pribadi (personal utility tool) untuk mengakses dan mengonversi ikon yang URL-nya secara terbuka tersedia.
+            {t('modal.p1')}
           </Text>
           <Text size="sm">
-            Pengguna secara penuh bertanggung jawab mengecek lisensi hak cipta, ToS provider sumber, serta kepatuhan redistribusi ikon terkait sebelum menggunakannya secara komersial.
+            {t('modal.p2')}
           </Text>
-          <Button onClick={() => setTosModalOpened(false)} color="indigo" mt="md">
-            Saya Mengerti
+          <Button onClick={() => setTosModalOpened(false)} color="pacificCyan" mt="md">
+            {t('modal.closeButton')}
           </Button>
         </Stack>
       </Modal>

@@ -1,0 +1,59 @@
+{
+  "app": {
+    "title": "Icon Converter & Fallback Fetcher",
+    "subtitle": "Convert SVG markup, Unicode glyphs, or web icon assets into PNG, JPG, and WEBP images instantly with custom resolution and colors.",
+    "tosNotice": "Terms of Service & Legal Notice"
+  },
+  "preview": {
+    "title": "Live Preview",
+    "exportFormatLabel": "Export Format",
+    "resolutionLabel": "Resolution Preset",
+    "downloadButton": "Download Icon"
+  },
+  "input": {
+    "title": "Select Icon Input Source",
+    "modes": {
+      "svgCode": "SVG Code",
+      "unicode": "Unicode Glyph",
+      "url": "URL Fetcher (Opt-In)"
+    },
+    "svg": {
+      "label": "Paste SVG XML Markup below:",
+      "sample": "Sample:",
+      "placeholder": "<svg ...> ... </svg>"
+    },
+    "unicode": {
+      "label": "Unicode Character / Symbol",
+      "placeholder": "Enter emoji or symbol (e.g. ⚡, ★, 🚀)"
+    },
+    "url": {
+      "title": "Fallback Specific Icon Fetcher (Opt-In)",
+      "placeholder": "https://example.com/icon.svg",
+      "fetchButton": "Fetch",
+      "tosLink": "ToS & Legal Notice"
+    }
+  },
+  "customization": {
+    "title": "Canvas & Appearance Customization",
+    "fillColor": "Icon Fill Color",
+    "bgType": "Canvas Background Type",
+    "bgColor1": "Background Color 1",
+    "bgColor2": "Background Color 2",
+    "padding": "Icon Padding",
+    "bgOptions": {
+      "transparent": "Transparent",
+      "solid": "Solid Color",
+      "gradient": "Gradient Color"
+    }
+  },
+  "notifications": {
+    "fetchSuccess": "SVG Icon successfully retrieved via VPS Proxy API!",
+    "fetchError": "Failed to fetch icon via proxy"
+  },
+  "modal": {
+    "title": "Legal & Terms of Service Notice",
+    "p1": "The Fallback Icon Fetcher feature is provided strictly as a personal utility tool to access and convert icons that are publicly accessible via URL.",
+    "p2": "Users bear full responsibility for verifying copyright licenses, source provider terms of service, and compliance with icon redistribution prior to any commercial usage.",
+    "closeButton": "I Understand"
+  }
+}

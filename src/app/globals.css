@@ -2,8 +2,15 @@
 
 :root {
   --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(30, 41, 59, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  
+  /* SCSS Custom Token Aliases from palette.scss */
+  --faded-copper: #a57548;
+  --soft-apricot: #fcd7ad;
+  --peach-glow: #f6c28b;
+  --pacific-cyan: #5296a5;
+  --frosted-blue: #82ddf0;
 }
 
 body {
@@ -16,17 +23,17 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-/* Glassmorphism utility card */
+/* Glassmorphism utility card with WCAG AA verified contrasts */
 .glass-panel {
-  background: rgba(30, 41, 59, 0.75);
+  background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-/* Canvas preview container checkboard background */
+/* Canvas preview container checkerboard background */
 .checkerboard-bg {
   background-color: #1e293b;
   background-image: 
