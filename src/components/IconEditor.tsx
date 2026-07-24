@@ -11,7 +11,7 @@ interface IconEditorProps {
   initialConfig?: Partial<IconConfig>;
   title: string;
   subtitle: string;
-  inputControl: React.ReactNode;
+  inputControl: React.ReactNode | ((config: IconConfig, setConfig: React.Dispatch<React.SetStateAction<IconConfig>>) => React.ReactNode);
 }
 
 export function IconEditor({ title, subtitle, inputControl, initialConfig }: IconEditorProps) {
