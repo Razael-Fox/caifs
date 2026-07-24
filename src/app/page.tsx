@@ -108,7 +108,7 @@ export default function IconConverterApp() {
             Icon Converter & Fallback Fetcher
           </Title>
         </Group>
-        <Text c="dimmed" maxOverflow="ellipsis" size="lg" className="max-w-2xl">
+        <Text c="dimmed" size="lg" className="max-w-2xl">
           Konversi SVG, Unicode Glyph, atau Asset Web Icon ke image PNG, JPG, & WEBP secara instan dengan resolusi & warna kustom.
         </Text>
       </Stack>
