@@ -5,12 +5,26 @@ import {
   Title, Text, Group, Stack, SegmentedControl, Textarea, TextInput, 
   Select, Slider, ColorInput, Button, Card, Badge, Modal, ActionIcon, Notification 
 } from '@mantine/core';
-import { 
-  IconDownload, IconCopy, IconWand, IconSparkles, IconInfoCircle, 
-  IconCode, IconWorld, IconTypography, IconRefresh 
-} from '@tabler/icons-react';
 import { IconConfig, DEFAULT_CONFIG } from '../types/icon';
 import { IconCanvas } from '../components/IconCanvas';
+
+const IconSparkles = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z"/>
+  </svg>
+);
+
+const IconDownload = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+  </svg>
+);
+
+const IconInfoCircle = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+  </svg>
+);
 
 export default function IconConverterApp() {
   const [config, setConfig] = useState<IconConfig>(DEFAULT_CONFIG);
@@ -89,7 +103,7 @@ export default function IconConverterApp() {
       {/* Header */}
       <Stack align="center" justify="center" mb="xl" className="text-center">
         <Group gap="xs">
-          <IconSparkles size={32} color="#818cf8" />
+          <IconSparkles />
           <Title order={1} className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400 bg-clip-text text-transparent">
             Icon Converter & Fallback Fetcher
           </Title>
@@ -146,7 +160,7 @@ export default function IconConverterApp() {
                 size="lg" 
                 variant="gradient" 
                 gradient={{ from: 'indigo', to: 'cyan' }}
-                leftSection={<IconDownload size={20} />}
+                leftSection={<IconDownload />}
                 onClick={handleExport}
                 className="shadow-lg shadow-indigo-500/20"
               >
@@ -230,7 +244,7 @@ export default function IconConverterApp() {
                       variant="subtle" 
                       color="gray" 
                       size="xs" 
-                      leftSection={<IconInfoCircle size={14} />}
+                      leftSection={<IconInfoCircle />}
                       onClick={() => setTosModalOpened(true)}
                     >
                       ToS & Legal Notice
