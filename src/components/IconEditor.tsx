@@ -123,7 +123,7 @@ export function IconEditor({ title, subtitle, inputControl, initialConfig }: Ico
                 </Text>
                 {typeof inputControl === 'function'
                   ? (inputControl as any)(config, setConfig)
-                  : React.cloneElement(inputControl as React.ReactElement, { config, setConfig })}
+                  : React.cloneElement(inputControl as React.ReactElement, { config, setConfig } as any)}
               </div>
 
               <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1.5rem' }}>
